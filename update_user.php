@@ -12,25 +12,44 @@
 		
 		require_once("db.inc");
 		
-		$result = mysqli_query($conn, "UPDATE products SET kayttajatunnus = '$kayttajatunnus', nimi = '$nimi', salasana = '$salasana', lisatieto = '$lisatieto' WHERE ID = $ID");
+		$result = mysqli_query($conn, "UPDATE user SET kayttajatunnus = '$kayttajatunnus', nimi = '$nimi', salasana = '$salasana', lisatieto = '$lisatieto' WHERE ID = $ID");
 		
 		if ($result) {
 			
 			$response["success"] = 1;
-			$response["message"] = "K�ytt�j� p�ivitetty";
+			$response["message"] = "Käyttäjä päivitetty";
+
+			myLog("######### '". date('d-M-Y H:i:s'). "'Log start##########'");
+            myLog("Käyttäjä päivitetty");
+            myLog("#########End log##########\n");
 			
 			echo json_encode($response);
 		}
 		else {
+
+			$response["success"] = 0;
+			$response["message"] = "Päivitys epäonnistui";
 			
+			myLog("######### '". date('d-M-Y H:i:s'). "'Log start##########'");
+            myLog("Käyttäjän päivitys epäonnistui");
+			myLog("#########End log##########\n");
+			
+			echo json_encode($response);
 			
 		}
 	}
 	else {
 		
 		$response["success"] = 0;
-		$respnse["message"] = "Tarvittavat kent�t puuttuvat";
+		$response["message"] = "Tarvittavat kentät puuttuvat";
 		
 		echo json_encode($response);
 	}
+
+	function myLog($msg) {
+
+        $logfile = 'log/log_' . date('d-M-Y') . '.log';
+
+        file_put_contents($logfile, $msg . "\n", FILE_APPEND);
+    }
 ?>

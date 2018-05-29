@@ -10,7 +10,7 @@
 
         $ID = $_GET['ID'];
 
-        $result = mysqli_query($conn, "SELECT * FROM user WHERE ID = $ID");
+        $result = mysqli_query($conn, "SELECT * FROM works WHERE ID = $ID");
 
         if (!empty($result)) {
 
@@ -18,30 +18,30 @@
 
                 $result = mysqli_fetch_array($result);
 
-                $user = array();
-                $user["ID"] = $result["ID"];
-                $user["kayttajatunnus"] = $result["kayttajatunnus"];
-                $user["nimi"] = $result["nimi"];
-                $user["salasana"] = $result["salasana"];
-                $user["lisatieto"] = $result["lisatieto"];
+                $work = array();
+                $work["ID"] = $result["ID"];
+                $work["tyo_ID"] = $result["tyo_ID"];
+                $work["kuvaus"] = $result["kuvaus"];
+                $work["pvm"] = $result["pvm"];
+                $work["tila"] = $result["tila"];
 
                 $response["success"] = 1;
 
-                $response["user"] = array();
+                $response["work"] = array();
 
-                array_push($response["user"], $user);
+                array_push($response["work"], $work);
 
                 echo json_encode($response);
 
                 myLog("######### '". date('d-M-Y H:i:s'). "'Log start##########'");
-                myLog("Käyttäjää haettu ID:n perusteella");
+                myLog("Töitä haettu ID:n perusteella");
                 myLog("#########End log##########");
 
             }
             else {
 
                 $response["success"] = 0;
-                $response["message"] = "Käyttäjää ei löytynyt";
+                $response["message"] = "Työtä ei löytynyt";
 
                 echo json_encode($response);
 
@@ -53,7 +53,7 @@
         else {
 
             $response["success"] = 0;
-            $response["message"] = "Käyttäjää ei löytynyt";
+            $response["message"] = "Työtä ei löytynyt";
 
             echo json_encode($response);
 

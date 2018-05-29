@@ -4,23 +4,29 @@
     $response = array();
 
     require_once("db.inc");
+	
+	$tila = "UUSI";
 
-    $result = mysqli_query($conn, "SELECT * FROM user");
+    $result = mysqli_query($conn, "SELECT * FROM works WHERE tila = '$tila'");
 
     if (mysqli_num_rows($result) > 0) {
 
-        $response["user"] = array();
+        $response["works"] = array();
+		
+		
 
         while($row = mysqli_fetch_array($result)) {
 
-            $user = array();
-            $user["ID"] = $row["ID"];
-            $user["kayttajatunnus"] = $row["kayttajatunnus"];
-            $user["nimi"] = $row["nimi"];
-            $user["salasana"] = $row["salasana"];
-            $user["lisatieto"] = $row["lisatieto"];
+            $work = array();
+            $work["ID"] = $row["ID"];
+            $work["tyo_ID"] = $row["tyo_ID"];
+            $work["kuvaus"] = $row["kuvaus"];
+            $work["pvm"] = $row["pvm"];
+            $work["tila"] = $row["tila"];
 
-            array_push($response["user"], $user);
+            array_push($response["works"], $work);
+			
+			
         }
 
         $response["success"] = 1;

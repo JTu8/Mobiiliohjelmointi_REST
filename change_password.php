@@ -2,49 +2,48 @@
 
     $response = array();
 
-    if (isset($_POST['kayttajatunnus']) && isset($_POST['nimi']) && isset($_POST['salasana']) && isset($_POST['lisatieto'])) {
+    if(isset($_POST['kayttajatunnus']) && isset($_POST['salasana'])) {
 
         $kayttajatunnus = $_POST['kayttajatunnus'];
-        $nimi = $_POST['nimi'];
         $salasana = $_POST['salasana'];
-        $lisatieto = $_POST['lisatieto'];
 
         require_once("db.inc");
 
-        //$db = new DB_CONNECT();
-
-        $result = mysqli_query($conn, "INSERT INTO user(kayttajatunnus, nimi, salasana, lisatieto) VALUES('$kayttajatunnus', '$nimi', '$salasana', '$lisatieto')");
+        $result = mysqli_query($conn, "UPDATE user SET salasana = '$salasana' WHERE kayttajatunnus = '$kayttajatunnus'");
 
         if ($result) {
 
             $response["success"] = 1;
-            $response["message"] = "Käyttäjä luotu";
-
-            echo json_encode($response);
+            $response["message"] = "Salasana vaihdettu";
 
             myLog("######### '". date('d-M-Y H:i:s'). "'Log start##########'");
-            myLog("Uusi käyttäjä luotu");
+            myLog("Salasana vaihdettu");
             myLog("#########End log##########\n");
 
+            echo json_encode($response);
         }
         else {
 
             $response["success"] = 0;
-            $response["message"] = "Käyttäjän luonti epäonnistui";
+            $response["message"] = "Salasanan vaihto epäonnistui";
 
             echo json_encode($response);
 
             myLog("######### '". date('d-M-Y H:i:s'). "'Log start##########'");
-            myLog("Käyttäjän luonti epäonnistui");
+            myLog("Salasanan vaihto epäonnistui");
             myLog("#########End log##########\n");
-
         }
-
     }
     else {
 
         $response["success"] = 0;
-        $response["message"] = "Vaadittu kenttä puuttuu";
+        $response["message"] = "Tarvittavat kentät puuttuvat";
+
+        echo json_encode($response);
+
+            myLog("######### '". date('d-M-Y H:i:s'). "'Log start##########'");
+            myLog("Salasanan vaihto epäonnistui");
+            myLog("#########End log##########\n");
     }
 
     function myLog($msg) {

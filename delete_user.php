@@ -14,20 +14,39 @@
 			
 			$response["success"] = 1;
 			$response["message"] = "Käyttäjä poistettu";
+
+			myLog("######### '". date('d-M-Y H:i:s'). "'Log start##########'");
+            myLog("Käyttäjä poistettu");
+            myLog("#########End log##########\n");
 			
 			echo json_encode($response);
 		}
 		else {
 			
 			$response["success"] = 0;
-			$response["message"] = "K�ytt�j�� ei l�ytynyt";
+			$response["message"] = "Käyttäjää ei löytynyt";
+
+			myLog("######### '". date('d-M-Y H:i:s'). "'Log start##########'");
+            myLog("Poisto epäonnistui");
+            myLog("#########End log##########\n");
 		}
 	}
 	else {
 		
 		$response["success"] = 0;
-		$response["message"] = "Vaadittu kentt� puuttuu";
+		$response["message"] = "Vaadittu kenttä puuttuu";
+
+		myLog("######### '". date('d-M-Y H:i:s'). "'Log start##########'");
+        myLog("Poisto epäonnistui");
+        myLog("#########End log##########\n");
 		
 		echo json_encode($response);
 	}
+
+	function myLog($msg) {
+
+        $logfile = 'log/log_' . date('d-M-Y') . '.log';
+
+        file_put_contents($logfile, $msg . "\n", FILE_APPEND);
+    }
 ?>
